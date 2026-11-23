@@ -14,6 +14,12 @@ if (LINE.trim().length === 0) {
 if (LINE.includes("\n")) {
   throw new Error("entry must be a single line");
 }
+if (/[\u0000-\u001f\u007f]/.test(LINE)) {
+  throw new Error("entry must not contain control characters");
+}
+if (LINE !== LINE.trim()) {
+  throw new Error("entry must not have leading or trailing whitespace");
+}
 
 mkdirSync("/output", { recursive: true });
 writeFileSync("/output/entry.txt", LINE + "\n", "utf8");
